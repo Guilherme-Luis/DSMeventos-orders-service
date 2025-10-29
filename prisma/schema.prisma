@@ -1,0 +1,18 @@
+// O schema.prisma está sendo usado como ferramenta de schema declarativo, para assim, garantir consistência e gerar migrations automáticas.
+// No caso de adição de rota, por favor, atualizar o schema.prisma afim de manter a consistência do projeto.
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mongodb"
+    url = env("DB_URL")
+}
+
+// Este é um modelo de usuário, por favor, atualizar com os models reais utilizado no projeto
+model User {
+    id String @id @map("_id") @default(auto()) @db.ObjectId
+    name String
+    email String @unique
+}
