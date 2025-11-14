@@ -7,15 +7,12 @@ export const prisma = new PrismaClient();
 
 
 export const connectDB = async () => {
-    const { DB_URL, DB_PORT, NODE_ENV } = process.env;
+    const { DB_URL, NODE_ENV } = process.env;
     try {
-        if (!DB_URL || !DB_PORT) {
+        if (!DB_URL) {
             throw new Error('Database is not defined in environment variables');
         }
-        const connect = await mongoose.connect(`mongodb://${DB_URL}:${DB_PORT}/${NODE_ENV}`, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        const connect = await mongoose.connect(DB_URL);
         console.log(`MongoDB Connected: ${connect.connection.host}`);
     } catch (error) {
         console.error(`Error connecting to MongoDB: ${error.message}`);
