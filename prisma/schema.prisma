@@ -1,18 +1,39 @@
-// O schema.prisma está sendo usado como ferramenta de schema declarativo, para assim, garantir consistência e gerar migrations automáticas.
-// No caso de adição de rota, por favor, atualizar o schema.prisma afim de manter a consistência do projeto.
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "mongodb"
-    url = env("DB_URL")
+  provider = "mongodb"
+  url = env("DB_URL")
 }
 
-// Este é um modelo de usuário, por favor, atualizar com os models reais utilizado no projeto
+/// Modelo de usuário (placeholder). Atualize conforme o modelo real do seu projeto.
 model User {
-    id String @id @map("_id") @default(auto()) @db.ObjectId
-    name String
-    email String @unique
+  id String @id @map("_id") @default(auto()) @db.ObjectId
+  name String
+  email String @unique
+  subscriptions Subscription[]  // relação opcional com inscrições
+}
+
+/// Modelo de inscrição (orders/subscriptions)
+model Subscription {
+  id String @id @map("_id") @default(auto()) @db.ObjectId
+  userId String @db.ObjectId
+  eventId String
+  createdAt DateTime @default(now())
+
+  // snapshot opcional dos dados do evento (reduz chamadas ao events-service)
+  eventTitle String? 
+  eventDate DateTime?
+  eventDescription String?
+
+  // relação com User (opcional)
+  user User @relation(fields: [userId], references: [id])
+
+  /// índice único composto para evitar duplicação (um usuário não pode inscrever no mesmo evento duas vezes)
+  @@unique([userId, eventId])
+
+  /// índices adicionais para consultas rápidas
+  @@index([userId])
+  @@index([eventId])
 }
