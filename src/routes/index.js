@@ -8,8 +8,7 @@ dotenv.config();
 const router = express.Router();
 const { NODE_ENV,
   DSM_EVENTS_SERVICE,
-  DSM_EVENTS_AUTH_SERVICE,
-  DSM_EVENTS_WEBAPP
+  DSM_EVENTS_AUTH_SERVICE
 } = process.env;
 
 /**
@@ -30,7 +29,6 @@ router.get('/', (req, res) => {
     environment: NODE_ENV,
     dsmEventsService: DSM_EVENTS_SERVICE,
     dsmEventsAuthService: DSM_EVENTS_AUTH_SERVICE,
-    dsmEventsWebapp: DSM_EVENTS_WEBAPP,
     timestamp: new Date().toISOString(),
   });
 });
